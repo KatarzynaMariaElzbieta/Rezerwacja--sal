@@ -1,9 +1,10 @@
 {% extends 'index.html' %}
 
 {% block content %}
-    {% csrf_token %}
     <form method="post">
-      <div class="form-group mx-sm-3 mb-2", align="center">
+        {% csrf_token %}
+
+        <div class="form-group mx-sm-3 mb-2", align="center">
           <label>Nazwa sali:</label>
           <input class="form-control" type="text" name="name">
 
@@ -17,7 +18,11 @@
           </select>
           <br>
           <button type="submit">Dodaj</button>
-
       </div>
     </form>
+    {% if added == 'Yes' %}
+        <p class="form-control">Sala została dodana.</p>
+    {% elif added == 'No' %}
+        <p class="form-control">Popraw dane!</p>
+    {% endif %}
 {% endblock %}

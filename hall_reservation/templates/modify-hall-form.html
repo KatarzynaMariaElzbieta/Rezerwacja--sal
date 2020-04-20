@@ -1,0 +1,34 @@
+{% extends 'index.html' %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group mx-sm-3 mb-2" align="center">
+            <label>Nazwa sali:</label>
+            <input class="form-control" type="text" name="name" value="{{ room.name }}">
+
+            <label>Ilość miejsc:</label>
+            <input class="form-control" type="number" name="seats" value="{{ room.seats }}">
+
+            <label>Rzutnik:</label>
+            <select class="form-control" type="select" name="projector">
+                {% if room.projector == False %}
+                    <option selected value=False>NIE</option>
+                    <option value="True">TAK</option>
+
+                {% else %}
+                    <option  value=True>TAK</option>
+                    <option selected value=False>NIE</option>
+                {% endif %}
+            </select>
+            <br>
+            <button type="submit">Aktualizuj</button>
+        </div>
+    </form>
+    {% if added == 'Yes' %}
+        <p class="form-control">Sala została zaktualizowana.</p>
+    {% elif added == 'No' %}
+        <p class="form-control">Popraw dane!</p>
+    {% endif %}
+{% endblock %}
