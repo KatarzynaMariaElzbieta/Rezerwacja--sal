@@ -1,0 +1,23 @@
+{% extends 'index.html' %}
+
+{% block content %}
+    {% csrf_token %}
+    <form method="post">
+      <div class="form-group mx-sm-3 mb-2", align="center">
+          <label>Nazwa sali:</label>
+          <input class="form-control" type="text" name="name">
+
+          <label>Ilość miejsc:</label>
+          <input class="form-control" type="number" name="seats">
+
+          <label>Rzutnik:</label>
+          <select class="form-control" type="select" name="projector">
+          <option value="True">TAK</option>
+          <option value="False">NIE</option>
+          </select>
+          <br>
+          <button type="submit">Dodaj</button>
+
+      </div>
+    </form>
+{% endblock %}

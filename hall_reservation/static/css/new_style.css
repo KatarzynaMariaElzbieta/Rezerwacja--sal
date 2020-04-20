@@ -1,0 +1,25 @@
+body {
+    background: darkslategray;
+}
+.btn-primary {
+    color: darkslategray;
+    background: cornsilk;
+}
+#footer {
+    color: white;
+    text-align: right;
+}
+form {
+    width: 50%;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%)
+}
+label {
+    color: ghostwhite;
+}
+select, input {
+    text-align: center;
+}
