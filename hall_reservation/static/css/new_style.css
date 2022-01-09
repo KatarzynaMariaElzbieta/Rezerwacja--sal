@@ -23,3 +23,18 @@ label {
 select, input {
     text-align: center;
 }
+
+.list_block {
+    background-color: floralwhite;
+    width: 30rem;
+    height: 20rem;
+    margin: 3rem;
+    display: inline-block;
+    text-align: center;
+}
+
+.hall_title {
+    margin: inherit;
+    font-size: large;
+    font-weight: bolder;
+}

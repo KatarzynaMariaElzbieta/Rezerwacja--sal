@@ -1,0 +1,13 @@
+{% extends 'index.html' %}
+
+{% block content %}
+    {% for hall in hall_list %}
+    <div class="list_block">
+        <div class="hall_title">{{hall.name}}</div>
+        <div>{{hall.seats}}</div>
+        <div>{{hall.projector}}</div>
+        <div>{% if hall.id in reservation.id %}Zarezerwowana {% else %}Wolna{% endif %}</div>
+        <a href="reservation/{{hall.id}}"><button>Zarezerwuj</button></a>
+    </div>
+    {% endfor %}
+{% endblock %}

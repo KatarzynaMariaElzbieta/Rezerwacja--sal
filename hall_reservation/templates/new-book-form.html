@@ -1,0 +1,15 @@
+{% extends 'index.html' %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+
+        {{form}}
+        <button type="submit">Dodaj</button>
+    </form>
+    {% if added == 'Yes' %}
+        <p class="form-control">Sala została dodana.</p>
+    {% elif added == 'No' %}
+        <p class="form-control">Popraw dane!</p>
+    {% endif %}
+{% endblock %}
