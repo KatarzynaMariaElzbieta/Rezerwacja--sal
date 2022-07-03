@@ -6,7 +6,7 @@
         <div class="hall_title">{{hall.name}}</div>
         <div>{{hall.seats}}</div>
         <div>{{hall.projector}}</div>
-        <div>{% if hall.id in reservation.id %}Zarezerwowana {% else %}Wolna{% endif %}</div>
+        <div>{% if hall.id in reservations %}Zarezerwowana {% else %}Wolna{% endif %}</div>
         <a href="reservation/{{hall.id}}"><button>Zarezerwuj</button></a>
     </div>
     {% endfor %}

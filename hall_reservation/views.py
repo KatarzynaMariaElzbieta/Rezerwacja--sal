@@ -3,7 +3,7 @@ import datetime
 from django.core.exceptions import ValidationError
 from django.shortcuts import render
 from django.views import View
-from importlib_resources._common import _
+# from importlib_resources._common import _
 
 from hall_reservation.forms import BookForm
 from hall_reservation.models import Hall, Reservation
@@ -11,15 +11,19 @@ from hall_reservation.models import Hall, Reservation
 
 # Create your views here.
 
-def glowna(request):
+def main(request):
     """Widok strony głównej"""
     all_hall = Hall.objects.all()
+    print(datetime.date.today())
     reservations = Reservation.objects.filter(date=datetime.date.today())
-    reserved_today = [book.id for book in reservations]
+    print(reservations)
+    reserved_today = [book.hall_id for book in reservations]
+    print('reserved_today')
+    print(reserved_today)
     reservations = Reservation.objects.all()
-    for i in reservations:
-        print('rp')
-        print(i.date)
+    # for i in reservations:
+    #     print('rp')
+    #     print(i.date)
     return render(request, 'main_page.html', {'hall_list': all_hall, 'reservations': reserved_today})
 
 
@@ -71,25 +75,19 @@ class BookRoom(View):
     def get(self, request, id):
         """Formularz rezerwacji sali"""
         room = Hall.objects.get(id=id)
-        form = BookForm()
+        form = BookForm(initial={'hall_id': room.id})
+        # form.initial({'hall_id': room.id})
         return render(request, 'new-book-form.html', {'room': room, 'form': form})
 
     def post(self, request, id):
         """Funkcja odczytuje z formularza i zapisuje dane nowej rezerwacji sali do bazy"""
-        try:
-            print(id)
-            reservation = Reservation.objects.create(
-                date=datetime.date.today(),
-                hall_id=1,
-                comment='jakis teskt sztywno'
+        form = BookForm(request.POST)
+        if form.is_valid():
+            r = Reservation.objects.create(
+                date=request.POST.get('date'),
+                hall_id=id,
+                comment=request.POST.get('comment'),
             )
-            print(reservation)
-            return render(request, 'new-book-form.html', {'added': 'Yes'})
-        except:
+            return render(request, 'new-book-form.html', {'added': 'Yes', 'reservation': r})
+        else:
             return render(request, 'new-book-form.html', {'added': 'No'})
-
-        #     reservation = Reservation.object.create(
-        #         date=request.POST.get("date"),
-        #         hall_id=id,
-        #         comment=request.POST.get("comment"))
-

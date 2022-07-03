@@ -12,7 +12,7 @@ class Hall(models.Model):
 
 class Reservation(models.Model):
     date = models.DateTimeField()
-    hall_id = models.ForeignKey('Hall', on_delete=DO_NOTHING)
+    hall = models.ForeignKey('Hall', on_delete=DO_NOTHING)
     comment = models.TextField()
 
     class Meta:

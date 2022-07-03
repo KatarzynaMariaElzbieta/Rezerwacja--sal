@@ -79,8 +79,8 @@ DATABASES = {
         'HOST': 'localhost',
         'NAME': 'reservation',
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
+        'USER': 'superuser',
+        'PASSWORD': 'password',
     }
 }
 
@@ -109,7 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Warsaw'
 
 USE_I18N = True
 
