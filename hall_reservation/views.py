@@ -1,6 +1,7 @@
 import datetime
 
 from django.core.exceptions import ValidationError
+from django.db import IntegrityError
 from django.shortcuts import render
 from django.views import View
 # from importlib_resources._common import _
@@ -14,16 +15,8 @@ from hall_reservation.models import Hall, Reservation
 def main(request):
     """Widok strony głównej"""
     all_hall = Hall.objects.all()
-    print(datetime.date.today())
     reservations = Reservation.objects.filter(date=datetime.date.today())
-    print(reservations)
     reserved_today = [book.hall_id for book in reservations]
-    print('reserved_today')
-    print(reserved_today)
-    reservations = Reservation.objects.all()
-    # for i in reservations:
-    #     print('rp')
-    #     print(i.date)
     return render(request, 'main_page.html', {'hall_list': all_hall, 'reservations': reserved_today})
 
 
@@ -42,8 +35,8 @@ class NewRoom(View):
                 seats=request.POST.get("seats"),
                 projector=request.POST.get("projector")
             )
-            return render(request, 'new-hall-form.html', {'added': 'Yes'})
-        except:
+            return render(request, 'new-hall-form.html', {'added': 'Yes', 'room': room})
+        except ValidationError:
             return render(request, 'new-hall-form.html', {'added': 'No'})
 
 
@@ -52,7 +45,6 @@ class ModifyRoom(View):
 
     def get(self, request, id):
         """Formularz edycji sali"""
-        print(id)
         room = Hall.objects.get(id=id)
         return render(request, 'modify-hall-form.html', {'room': room})
 
@@ -65,7 +57,7 @@ class ModifyRoom(View):
             room.projector = request.POST.get("projector")
             room.save()
             return render(request, 'modify-hall-form.html', {'modify': 'Yes'})
-        except:
+        except ValidationError:
             return render(request, 'modify-hall-form.html', {'modify': 'No'})
 
 
@@ -75,19 +67,20 @@ class BookRoom(View):
     def get(self, request, id):
         """Formularz rezerwacji sali"""
         room = Hall.objects.get(id=id)
-        form = BookForm(initial={'hall_id': room.id})
-        # form.initial({'hall_id': room.id})
+        form = BookForm(initial={'hall_id': room.id, 'date': datetime.date.today().strftime('%Y-%m-%d')})
         return render(request, 'new-book-form.html', {'room': room, 'form': form})
 
     def post(self, request, id):
         """Funkcja odczytuje z formularza i zapisuje dane nowej rezerwacji sali do bazy"""
-        form = BookForm(request.POST)
-        if form.is_valid():
-            r = Reservation.objects.create(
-                date=request.POST.get('date'),
-                hall_id=id,
-                comment=request.POST.get('comment'),
-            )
-            return render(request, 'new-book-form.html', {'added': 'Yes', 'reservation': r})
-        else:
-            return render(request, 'new-book-form.html', {'added': 'No'})
+        try:
+            form = BookForm(request.POST)
+            if form.is_valid():
+                r = Reservation.objects.create(
+                    date=request.POST.get('date'),
+                    hall_id=id,
+                    comment=request.POST.get('comment'),
+                )
+                return render(request, 'new-book-form.html', {'added': 'Yes', 'reservation': r})
+        except IntegrityError:
+            return render(request, 'new-book-form.html', {'added': 'occupied'})
+        return render(request, 'new-book-form.html', {'added': 'No'})

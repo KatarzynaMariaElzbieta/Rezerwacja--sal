@@ -7,8 +7,11 @@
         <button type="submit">Dodaj</button>
     </form>
     {% if added == 'Yes' %}
-        <p class="form-control">Sala została dodana.</p>
+        <p class="form-control">Rezerwacja została dodana.</p>
     {% elif added == 'No' %}
         <p class="form-control">Popraw dane!</p>
+    {% elif added == 'occupied' %}
+        <p class="form-control">Niestety, sala tego dnia jest już zajęta.
+        Wybierz inną salę lub zmień dzień.</p>
     {% endif %}
 {% endblock %}

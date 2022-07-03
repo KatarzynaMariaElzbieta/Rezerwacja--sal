@@ -10,12 +10,12 @@
 <body>
 <div id="menu">
     <a class="btn btn-primary" href="/">Strona Główna</a>
-    <a class="btn btn-primary" href="room/new">Dodaj salę</a>
+    <a class="btn btn-primary" href="{% url 'new_room' %}">Dodaj salę</a>
     <a class="btn btn-primary" href="contact">Kontakt</a>
 </div>
     <div>{% block content %}{% endblock %}</div>
     <div id="footer">
-        <p>Copyright by Katarzyna Gajc</p>
+        <p>Copyright by Katarzyna Kopeć</p>
     </div>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
