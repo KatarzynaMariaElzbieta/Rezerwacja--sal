@@ -1,13 +1,21 @@
 {% extends 'index.html' %}
 
 {% block content %}
-    {% for hall in hall_list %}
-    <div class="list_block">
-        <div class="hall_title">{{hall.name}}</div>
-        <div>{{hall.seats}}</div>
-        <div>{{hall.projector}}</div>
-        <div>{% if hall.id in reservations %}Zarezerwowana {% else %}Wolna{% endif %}</div>
-        <a href="reservation/{{hall.id}}"><button>Zarezerwuj</button></a>
-    </div>
-    {% endfor %}
+    {% if added == 'Yes' %}
+        <p class="form-control">Sala została zaktualizowana.</p>
+{% endif %}
+{% for hall in hall_list %}
+<div class="list_block">
+    <div class="hall_title">{{hall.name}}
+        <a href="/room/modify/{{hall.id}}"><img src="../static/image/modify.png"alt="modify" width="20px"/></a>
+        <a href="/room/delete/{{hall.id}}"><img src="../static/image/drop.png"
+                                                                                 alt="modify" width="20px"/></a></div>
+    <div>{{hall.seats}}</div>
+    <div>{{hall.projector}}</div>
+    <div>{% if hall.id in reservations %}Zarezerwowana {% else %}Wolna{% endif %}</div>
+    <a href="reservation/{{hall.id}}">
+        <button>Zarezerwuj</button>
+    </a>
+</div>
+{% endfor %}
 {% endblock %}

@@ -84,3 +84,10 @@ class BookRoom(View):
         except IntegrityError:
             return render(request, 'new-book-form.html', {'added': 'occupied'})
         return render(request, 'new-book-form.html', {'added': 'No'})
+
+
+def drop_hall(request, id):
+    """Widok strony głównej"""
+    room = Hall.objects.get(id=id)
+    room.delete()
+    return render(request, 'main_page.html', {'added': 'Yes'})
