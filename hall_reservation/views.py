@@ -1,10 +1,10 @@
+import calendar
 import datetime
 
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.shortcuts import render
 from django.views import View
-# from importlib_resources._common import _
 
 from hall_reservation.forms import BookForm
 from hall_reservation.models import Hall, Reservation
@@ -64,13 +64,13 @@ class ModifyRoom(View):
 class BookRoom(View):
     """Klasa dodająca rezerwująca sale."""
 
-    def get(self, request, id):
+    def get(self, request, id, rdate=datetime.date.today().strftime('%Y-%m-%d')):
         """Formularz rezerwacji sali"""
         room = Hall.objects.get(id=id)
-        form = BookForm(initial={'hall_id': room.id, 'date': datetime.date.today().strftime('%Y-%m-%d')})
+        form = BookForm(initial={'hall_id': room.id, 'date': rdate})
         return render(request, 'new-book-form.html', {'room': room, 'form': form})
 
-    def post(self, request, id):
+    def post(self, request, id, rdate):
         """Funkcja odczytuje z formularza i zapisuje dane nowej rezerwacji sali do bazy"""
         try:
             form = BookForm(request.POST)
@@ -91,3 +91,14 @@ def drop_hall(request, id):
     room = Hall.objects.get(id=id)
     room.delete()
     return render(request, 'main_page.html', {'added': 'Yes'})
+
+
+def room_info(request, id):
+    room = Hall.objects.get(id=id)
+    month = [week for week in
+             calendar.Calendar().monthdatescalendar(datetime.date.today().year, datetime.date.today().month)]
+    # reservations = Reservation.objects.filter(hall_id=id).filter(datr_gte=datetime.date.today())
+    # print(reservations)
+    reservations = room.reservation_set.all()
+    reserved_list = [book_date.date.date() for book_date in reservations]
+    return render(request, 'hall_details.html', {'hall': room, 'month': month, "reserved_list": reserved_list})

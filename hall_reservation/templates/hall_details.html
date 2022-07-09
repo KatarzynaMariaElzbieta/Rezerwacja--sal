@@ -1,0 +1,34 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="hall_title">{{hall.name}}
+    <a href="/room/modify/{{hall.id}}"><img src="../static/image/modify.png" alt="modify" width="20px"/></a>
+    <a href="/room/delete/{{hall.id}}"><img src="../static/image/drop.png"
+                                            alt="modify" width="20px"/></a></div>
+<div>{{hall.seats}}</div>
+<div>{{hall.projector}}</div>
+<div>{% if hall.id in reservations %}Zarezerwowana {% else %}Wolna{% endif %}</div>
+</div>
+<div class="callendar">
+    <table border="5" width="200">
+        <tr>
+            <th><</th>
+            <th colspan="5">{{month.2.1|date:"F Y" }}</th>
+            <th>></th>
+        </tr>
+        {% for week in month %}
+        <tr>
+            {% for day in week %}
+            {% if day in reserved_list %}
+            <td>{{day.day}}</td>
+            {% else %}
+            <td><a href="/reservation/{{hall.id}}/{{day.year}}-{{day.month}}-{{day.day}}">{{day.day}}</a></td>
+            {% endif %}
+            </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}
